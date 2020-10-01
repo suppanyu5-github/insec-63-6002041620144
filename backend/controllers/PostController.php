@@ -34,14 +34,18 @@ class PostController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
+    {   
+        if (Yii::$app->user->can('post-list')){
         $searchModel = new PostSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
+        }else{
+            
+        }
     }
 
     /**
@@ -51,10 +55,12 @@ class PostController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
+    {   
+        if (Yii::$app->user->can('post-view')){
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
+        }
     }
 
     /**
