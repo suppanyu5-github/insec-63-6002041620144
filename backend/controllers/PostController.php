@@ -44,7 +44,7 @@ class PostController extends Controller
             'dataProvider' => $dataProvider,
             ]);
         }else{
-            
+
         }
     }
 
@@ -60,6 +60,8 @@ class PostController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
             ]);
+        }else{
+            
         }
     }
 
