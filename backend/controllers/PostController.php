@@ -44,7 +44,7 @@ class PostController extends Controller
             'dataProvider' => $dataProvider,
             ]);
         }else{
-
+            echo "Need to contact admin";
         }
     }
 
@@ -61,7 +61,7 @@ class PostController extends Controller
             'model' => $this->findModel($id),
             ]);
         }else{
-            
+            echo "Need to contact admin";
         }
     }
 
@@ -72,6 +72,7 @@ class PostController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->can('post-create')){
         $model = new Post();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -81,6 +82,9 @@ class PostController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+        }else{
+            echo "Need to contact admin";
+        }
     }
 
     /**
@@ -92,6 +96,7 @@ class PostController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->can('post-create')){
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -101,6 +106,9 @@ class PostController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+        }else{
+            echo "Need to contact admin";
+        }
     }
 
     /**
@@ -112,9 +120,13 @@ class PostController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can('post-delete')){
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        }else{
+            echo "Need to contact admin";
+        }
     }
 
     /**
