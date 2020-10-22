@@ -16,7 +16,7 @@ class m201022_113443_create_post_permission_to_role extends Migration
 
         $author = $auth->getRole('author');
         $admin = $auth->getRole('admin');
-        $userAdmin = $auth->getRole('super-admin');
+        $superAdmin = $auth->getRole('super-admin');
 
         $listPost = $auth->getPermission('post-index');
         $createPost = $auth->getPermission('post-create');
@@ -29,7 +29,10 @@ class m201022_113443_create_post_permission_to_role extends Migration
         $auth->addChild($author, $updatePost);
         $auth->addChild($author, $viewPost);
 
+        $auth->addChild($admin, $author);
         
+        $auth->addChild($superAdmin, $admin);
+        $auth->addChild($superAdmin, $deletePost);
 
     }
 
@@ -38,9 +41,30 @@ class m201022_113443_create_post_permission_to_role extends Migration
      */
     public function safeDown()
     {
-        echo "m201022_113443_create_post_permission_to_role cannot be reverted.\n";
+        $auth = Yii::$app->authManager;
 
-        return false;
+        $author = $auth->getRole('author');
+        $admin = $auth->getRole('admin');
+        $superAdmin = $auth->getRole('super-admin');
+
+        $listPost = $auth->getPermission('post-index');
+        $createPost = $auth->getPermission('post-create');
+        $updatePost = $auth->getPermission('post-update');
+        $viewPost = $auth->getPermission('post-view');
+        $deletePost = $auth->getPermission('post-delete');
+
+        $auth->removeChild($author, $createPost);
+        $auth->removeChild($author, $listPost);
+        $auth->removeChild($author, $updatePost);
+        $auth->removeChild($author, $viewPost);
+
+        $auth->removeChild($admin, $author);
+        
+        $auth->removeChild($superAdmin, $admin);
+        $auth->removeChild($superAdmin, $deletePost);
+
+
+        return true;
     }
 
     /*
